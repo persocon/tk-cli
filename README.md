@@ -8,5 +8,5 @@
 
 
 #### TO-DO
-- [ ] read package.json and bump version there;
+- [x] read package.json and bump version there;
 - [ ] ask user to log in to npm adduser if not logged in.
