@@ -15,11 +15,11 @@ function getNumbers(input) {
     m = m.join('.');
     return m;
 }
+
 function getPrefix(input) {
     var m = input.match(/[a-zA-Z]+/g);
     return m !== null ? m : '';
 }
-
 
 function getLatestTag() {
   exec.quiet('git tag | tail -1').then(function (item) {
@@ -28,7 +28,6 @@ function getLatestTag() {
     VERSIONPREFIX = getPrefix(VERSIONTAGWITHPREFIX);
     getPublishQuestions(handleQuestionCallback);
   });
-
 }
 
 function getPublishQuestions(callback) {
@@ -68,6 +67,7 @@ function getCommit(callback) {
 
   inquirer.prompt(questions).then(callback);
 }
+
 function getPublishToNPM(callback) {
   var questions = [
     {
@@ -122,6 +122,7 @@ function handleBumpVersion(bump) {
       break;
   }
 }
+
 function exitCLIWithGoodBye(c) {
   if(c['stderr']) {
     console.log(c['stderr']);
@@ -129,6 +130,7 @@ function exitCLIWithGoodBye(c) {
   console.log(chalk.white.bgGreen(`Good bye!`));
   process.exit(0);
 }
+
 function publishingToNPM(b) {
   if (b.publish) {
     console.log(chalk.white.bgBlue(`Publishing!`));
@@ -137,13 +139,22 @@ function publishingToNPM(b) {
     exitCLIWithGoodBye();
   }
 }
-function bumpPackageJSON(nextTag){
+
+function getPackageJSON() {
   var contents = fs.readFileSync("package.json");
   var jsonContent = JSON.parse(contents);
+  return jsonContent;
+}
+function getVersion() {
+  return getPackageJSON().version;
+}
+function bumpPackageJSON(nextTag){
+
   jsonContent.version = nextTag;
   var jsonEdited = JSON.stringify(jsonContent, null, 2);
   fs.writeFile('package.json', jsonEdited, 'utf8');
 }
+
 function executeTag(nextTag, commit) {
   bumpPackageJSON(nextTag)
   exec.quiet([
@@ -158,9 +169,8 @@ function executeTag(nextTag, commit) {
   });
 }
 
-
 program
-  .version('0.0.1')
+  .version(`${getVersion()}`)
   .option('publish', 'Start publishing process')
   .parse(process.argv)
 
