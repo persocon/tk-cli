@@ -145,9 +145,7 @@ function getPackageJSON() {
   var jsonContent = JSON.parse(contents);
   return jsonContent;
 }
-function getVersion() {
-  return getPackageJSON().version;
-}
+
 function bumpPackageJSON(nextTag){
   var jsonContent = getPackageJSON();
   jsonContent.version = nextTag;
@@ -170,7 +168,6 @@ function executeTag(nextTag, commit) {
 }
 
 program
-  .version(`${getVersion()}`)
   .option('publish', 'Start publishing process')
   .parse(process.argv)
 
