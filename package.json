@@ -1,6 +1,6 @@
 {
   "name": "tk-cli",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A custom cli for publishing and stuff",
   "main": "index.js",
   "homepage": "https://github.com/persocon/tk-cli#readme",
