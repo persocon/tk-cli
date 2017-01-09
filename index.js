@@ -7,6 +7,7 @@ var VERSIONTAGWITHPREFIX;
 var VERSIONPREFIX;
 var VERSIONTAG;
 var BUMPVERSION;
+var COMMIT;
 
 function getNumbers(input) {
     var m = input.match(/[0-9]+/g);
@@ -23,7 +24,7 @@ function getLatestTag() {
   exec.quiet('git tag | tail -1').then(function (item) {
     VERSIONTAGWITHPREFIX = item.stdout.split('\n')[0];
     VERSIONTAG = getNumbers(VERSIONTAGWITHPREFIX);
-    PREFIX = getPrefix(VERSIONTAGWITHPREFIX);
+    VERSIONPREFIX = getPrefix(VERSIONTAGWITHPREFIX);
     getPublishQuestions(handleQuestionCallback);
   });
 
@@ -55,14 +56,30 @@ function getTag(callback){
   inquirer.prompt(questions).then(callback);
 }
 
+function getCommit(callback) {
+  var questions = [
+    {
+      type: 'input',
+      name: 'commit',
+      message: 'Message for the commit',
+    }
+  ];
+
+  inquirer.prompt(questions).then(callback);
+}
+
 function handleQuestionCallback(answers) {
   if (answers.bump === 'Type TAG') {
     getTag(function(tag) {
-      console.log(`${tag.tag}`)
+      BUMPVERSION = `${VERSIONPREFIX}${tag.tag}`;
     });
   } else {
-    console.log(handleBumpVersion(answers.bump));
+    BUMPVERSION = `${VERSIONPREFIX}${handleBumpVersion(answers.bump)}`;
   }
+  getCommit(function(com) {
+    COMMIT = com.commit;
+    executeTag(BUMPVERSION, COMMIT);
+  });
 }
 
 function handleBumpVersion(bump) {
@@ -70,12 +87,15 @@ function handleBumpVersion(bump) {
     case 'Major':
       var split = VERSIONTAG.split('.');
       split[0] = parseInt(split[0]) + 1;
+      split[1] = 0;
+      split[2] = 0;
       var resultMajor = split.join('.');
       return resultMajor;
       break;
     case 'Minor':
       var split = VERSIONTAG.split('.');
       split[1] = parseInt(split[1]) + 1;
+      split[2] = 0;
       var resultMinor = split.join('.');
       return resultMinor;
       break;
@@ -89,6 +109,13 @@ function handleBumpVersion(bump) {
       console.log(chalk.red('You must provide an option'))
       break;
   }
+}
+
+function executeTag(nextTag, commit) {
+
+  exec.quiet([`git tag -a ${nextTag} -m "${commit}"`, `git push --tags`]).then(function(res){
+    console.log(chalk.white.bgBlue(`${nextTag} - Tag Created and pushed!`));
+  });
 }
 
 
