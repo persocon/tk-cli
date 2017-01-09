@@ -3,6 +3,7 @@ var chalk = require('chalk');
 var program = require('commander');
 var inquirer = require('inquirer');
 var exec = require('executive');
+var fs = require("fs");
 var VERSIONTAGWITHPREFIX;
 var VERSIONPREFIX;
 var VERSIONTAG;
@@ -136,8 +137,22 @@ function publishingToNPM(b) {
     exitCLIWithGoodBye();
   }
 }
+function bumpPackageJSON(nextTag){
+  var contents = fs.readFileSync("package.json");
+  var jsonContent = JSON.parse(contents);
+  jsonContent.version = nextTag;
+  var jsonEdited = JSON.stringify(jsonContent, null, 2);
+  fs.writeFile('package.json', jsonEdited, 'utf8');
+}
 function executeTag(nextTag, commit) {
-  exec.quiet([`git tag -a ${nextTag} -m "${commit}"`, `git push --tags`]).then(function(res){
+  bumpPackageJSON(nextTag)
+  exec.quiet([
+    `git add package.json`,
+    `git commit -m "${commit}"`,
+    `git push origin master`,
+    `git tag -a ${nextTag} -m "${commit}"`,
+    `git push --tags`
+  ]).then(function(res){
     console.log(chalk.white.bgBlue(`${nextTag} - Tag Created and pushed!`));
     getPublishToNPM(publishingToNPM)
   });

@@ -13,6 +13,13 @@
   ],
   "author": "Pedro Costa Neves <neo.nyow@gmail.com>",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/persocon/tk-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/persocon/tk-cli/issues"
+  },
   "bin": {
     "tk-cli": "./index.js"
   },
