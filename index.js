@@ -121,7 +121,10 @@ function handleBumpVersion(bump) {
       break;
   }
 }
-function exitCLIWithGoodBye() {
+function exitCLIWithGoodBye(c) {
+  if(c['stderr']) {
+    console.log(c['stderr']);
+  }
   console.log(chalk.white.bgGreen(`Good bye!`));
   process.exit(0);
 }
