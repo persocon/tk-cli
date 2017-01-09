@@ -1,0 +1,25 @@
+{
+  "name": "tk-cli",
+  "version": "0.0.1",
+  "description": "A custom cli for publishing and stuff",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "author": "Pedro Costa Neves <neo.nyow@gmail.com>",
+  "license": "Apache-2.0",
+  "bin": {
+    "tk-cli": "./index.js"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.9.0",
+    "executive": "^1.1.8",
+    "inquirer": "^2.0.0"
+  }
+}
