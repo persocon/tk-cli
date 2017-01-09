@@ -67,6 +67,17 @@ function getCommit(callback) {
 
   inquirer.prompt(questions).then(callback);
 }
+function getPublishToNPM(callback) {
+  var questions = [
+    {
+      type: 'confirm',
+      name: 'publish',
+      message: 'Publish to NPM?',
+    }
+  ];
+
+  inquirer.prompt(questions).then(callback);
+}
 
 function handleQuestionCallback(answers) {
   if (answers.bump === 'Type TAG') {
@@ -110,11 +121,22 @@ function handleBumpVersion(bump) {
       break;
   }
 }
-
+function exitCLIWithGoodBye() {
+  console.log(chalk.white.bgGreen(`Good bye!`));
+  process.exit(0);
+}
+function publishingToNPM(b) {
+  if (b.publish) {
+    console.log(chalk.white.bgBlue(`Publishing!`));
+    exec.quiet('npm publish').then(exitCLIWithGoodBye);
+  } else {
+    exitCLIWithGoodBye();
+  }
+}
 function executeTag(nextTag, commit) {
-
   exec.quiet([`git tag -a ${nextTag} -m "${commit}"`, `git push --tags`]).then(function(res){
     console.log(chalk.white.bgBlue(`${nextTag} - Tag Created and pushed!`));
+    getPublishToNPM(publishingToNPM)
   });
 }
 
