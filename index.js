@@ -22,7 +22,7 @@ function getPrefix(input) {
 }
 
 function getLatestTag() {
-  exec.quiet('git tag | tail -1').then(function (item) {
+  exec.quiet('git describe $(git rev-list --tags --max-count=1)').then(function (item) {
     if(item['stderr']) { console.log(chalk.white.bgRed(item['stderr'].split('\n'))); process.exit(1)}
     VERSIONTAGWITHPREFIX = item['stdout'] === '' ? '0.0.0' : item.stdout.split('\n')[0];
     VERSIONTAG = getNumbers(VERSIONTAGWITHPREFIX);
