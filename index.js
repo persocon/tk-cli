@@ -23,7 +23,8 @@ function getPrefix(input) {
 
 function getLatestTag() {
   exec.quiet('git tag | tail -1').then(function (item) {
-    VERSIONTAGWITHPREFIX = item.stdout.split('\n')[0];
+    if(item['stderr']) { console.log(chalk.white.bgRed(item['stderr'].split('\n'))); process.exit(1)}
+    VERSIONTAGWITHPREFIX = item['stdout'] === '' ? '0.0.0' : item.stdout.split('\n')[0];
     VERSIONTAG = getNumbers(VERSIONTAGWITHPREFIX);
     VERSIONPREFIX = getPrefix(VERSIONTAGWITHPREFIX);
     getPublishQuestions(handleQuestionCallback);
@@ -141,9 +142,14 @@ function publishingToNPM(b) {
 }
 
 function getPackageJSON() {
-  var contents = fs.readFileSync("package.json");
-  var jsonContent = JSON.parse(contents);
-  return jsonContent;
+  if (fs.existsSync("package.json")) {
+    var contents = fs.readFileSync("package.json");
+    var jsonContent = JSON.parse(contents);
+    return jsonContent;
+  } else {
+    console.log(chalk.white.bgRed('No package.json found'));
+    process.exit(1);
+  }
 }
 
 function bumpPackageJSON(nextTag){
