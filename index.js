@@ -149,7 +149,7 @@ function getVersion() {
   return getPackageJSON().version;
 }
 function bumpPackageJSON(nextTag){
-
+  var jsonContent = getPackageJSON();
   jsonContent.version = nextTag;
   var jsonEdited = JSON.stringify(jsonContent, null, 2);
   fs.writeFile('package.json', jsonEdited, 'utf8');
