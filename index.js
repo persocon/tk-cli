@@ -162,6 +162,7 @@ function bumpPackageJSON(nextTag){
 function executeTag(nextTag, commit) {
   bumpPackageJSON(nextTag)
   exec.quiet([
+    `git fetch --all --tags`,
     `git add package.json`,
     `git commit -m "${commit}"`,
     `git push origin master`,
