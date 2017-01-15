@@ -14,4 +14,8 @@ what is **tk-cli**? it's a simple solution to bump your project tag and publish 
 
 #### TO-DO
 - [x] read package.json and bump version there;
-- [ ] ask user to log in to npm adduser if not logged in.
+- [x] ask user to log in to npm adduser if not logged in. (does not ask, it breaks if not logged but tell the user how to fix);
+- [ ] add .tk-clirc;
+- [ ] option to just add tag;
+- [ ] option to never publish to npm;
+- [ ] option to never try to find an package.json.
