@@ -1,0 +1,31 @@
+{
+  "name": "tk-cli",
+  "version": "0.1.0",
+  "description": "A custom cli for publishing and stuff",
+  "main": "index.js",
+  "homepage": "https://github.com/persocon/tk-cli#readme",
+  "readmeFilename": "README.md",
+  "scripts": {
+    "test": "make test"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "author": "Pedro Costa Neves <neo.nyow@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/persocon/tk-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/persocon/tk-cli/issues"
+  },
+  "bin": {
+    "tk-cli": "./index.js"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "commander": "^2.9.0",
+    "inquirer": "^2.0.0"
+  }
+}
