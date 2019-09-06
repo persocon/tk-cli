@@ -1,3 +1,5 @@
+# 🚨DEPRECATED 🚨
+
 # tk-cli
 [![npm](https://img.shields.io/npm/v/tk-cli.svg)](https://www.npmjs.com/package/tk-cli)
 
